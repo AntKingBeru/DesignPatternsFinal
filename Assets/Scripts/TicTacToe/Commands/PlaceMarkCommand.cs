@@ -7,7 +7,7 @@ public class PlaceMarkCommand : ICommand
     private readonly Mark _mark;
     
     // State captured right before Execute; restored on Undo.
-    private BoardMemento memento;
+    private BoardMemento _memento;
     
     public PlaceMarkCommand(BoardModel board, int cellIndex, Mark mark)
     {
@@ -19,14 +19,14 @@ public class PlaceMarkCommand : ICommand
     // Snapshot, then place the mark.
     public void Execute()
     {
-        memento = _board.CreateMemento();
+        _memento = _board.CreateMemento();
         _board.SetCell(_cellIndex, _mark);
     }
 
     // Restore the board exactly as it was before Execute.
     public void Undo()
     {
-        if (memento != null)
-            _board.RestoreMemento(memento);
+        if (_memento != null)
+            _board.RestoreMemento(_memento);
     }
 }
